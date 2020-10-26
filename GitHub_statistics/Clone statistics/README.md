@@ -2,6 +2,7 @@
 
 ## Description
 As GitHub doesn't store clones data more than 2 weeks, so this script helps to automate gathering a number of clones and unique clones of your GitHub repository. All data is collected in your Google Sheet via Google App Script.
+Note: after some experiments I found that 'unique' means unique per day. So, if you clone the repo yesterday the first time in life - you become unique. BUT! If you clone repo again the next day, so you will be again unique.
 
 ## Details
 

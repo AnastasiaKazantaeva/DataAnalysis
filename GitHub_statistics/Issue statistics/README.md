@@ -7,11 +7,8 @@ This help to store GitHub issue information for further analysis. All data is co
 
 This script is using Google App Script and GitHub API.
 
-This script doesn't store data for the current day, because this day is not over, it stores only the previous days. 
-
-If some day you had 0 clones GitHub API doesn't return this day at all. For example, if you have 1 Jan 12 clones, 2 Jan 0 clones, 3 Jan 0 clones, 4 Jan 5 clones, then API will return you: 1 Jan 12 clones, 4 Jan 5 clones. So this script checks missing days and adds dates with 0 clones and 0 unique clones.
-
-Script checks what data you already have and doesn't insert duplicate dates.
+This script doesn't store data for the current day, because this day is not over, it stores only for previous days. 
+Not everyday you have some issues, so at this day you will have an empty line: Date, Year, Month, Day. The rest colums will be empty. It was implemented in order to build per day chart, where you can see trend day over day, calculate average number of issues per day.
 
 
 ## How to
