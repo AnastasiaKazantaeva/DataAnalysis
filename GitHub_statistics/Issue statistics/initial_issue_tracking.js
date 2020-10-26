@@ -61,3 +61,76 @@ function initial_issues_tracking() {
     issue_range.setFormula('=HYPERLINK("' + issue_link + '";' + '"' + issue_number + '")');
   }
 }
+
+function prepare_row_to_add(issue, github_url, repo, options){
+  var created_date =  new Date(issue['created_at']);
+  var closed_date = issue['closed_at'];
+  if (closed_date){
+    closed_date = new Date(closed_date);
+  }
+  
+  var diff_days = "";
+  
+  if (closed_date){
+    diff_days = closed_date.setHours(0,0,0,0) - created_date.setHours(0,0,0,0);
+    diff_days = Math.floor((diff_days)/(24*3600*1000));
+  }
+  else{
+    closed_date = "";
+  }
+  
+  var user_login = issue['user']['login'];
+  // Check if author is member of your repo  
+  var check_member_url = github_url + 'orgs/' + repo.split('/').shift() + '/members/' + user_login;
+  var isMember;
+  try{
+    var response_member = UrlFetchApp.fetch(check_member_url, options);
+    isMember = true;
+  } catch(err) {
+    isMember = false;
+    }
+//  var result_member = response_member.getContentText();
+//  var data_member = JSON.parse(result_member);
+  
+  var year = created_date.getFullYear();
+  var month = 1 + created_date.getMonth();
+  var day = created_date.getDate();
+  var label_info = issue['labels'];
+  var label_list = [];
+  for (var l=0;l<label_info.length;l++){
+    label_list.push(label_info[l]['name']);
+  }
+  
+  var assignees = issue['assignees'];
+  var assignees_login = [];
+  if (assignees){
+    for (var a=0; a<assignees.length;a++){
+      var log = assignees[a]['login'];
+      assignees_login.push(log);
+    }
+    
+  } 
+  
+  var row = ([year + '/' + month + '/' + day, year, month, day, created_date, closed_date, diff_days, user_login, isMember, issue['html_url'], label_list.toString(), issue['state'], assignees_login.toString()]);
+  return row;
+}
+
+
+function days_without_issue(issue, prev_date, sheet, j){
+  // Find how many days between previous day of creted issue and current. If more than 1 - add empty line to Google Sheet
+  var created_date =  new Date(issue['created_at']);
+  var diff_days;
+  if (j != 0){
+    diff_days = Math.floor((created_date.setHours(0,0,0,0)-prev_date.setHours(0,0,0,0))/(24*3600*1000));
+  }
+  
+  if (diff_days > 1){
+    for(var i=1; i<diff_days; i++){
+      var day_to_add = new Date(prev_date.getFullYear(), prev_date.getMonth(), prev_date.getDate()+i);
+      var year_ = day_to_add.getFullYear();
+      var month_ = 1 + day_to_add.getMonth();
+      var day_ = day_to_add.getDate();
+      sheet.appendRow([year_ + '/' + month_ + '/' + day_, year_, month_, day_]);
+    }
+  }
+}
