@@ -12,8 +12,6 @@ Not everyday you have some issues, so at this day you will have an empty line: D
 
 
 ## How to
-1. Check that you have rights to see traffic of GitHub repo. Go to repository -> Insights -> Traffic. 
-If you can see the 'Traffic' tab, you have admin rights and can get clones data via API. If not - request access from your repo's admin.
 1. Get GitHub authorization token. Instruction: https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
 1. Create empty Google Sheet
 1. Add header: 'Date', 'Year', 'Month', 'Day', 'Exact date', 'Closed date', 'Case age, days', 'Author',	'IsAMember', 'Link', 'Labels', 'Status', 'Assignee'
